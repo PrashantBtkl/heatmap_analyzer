@@ -1,8 +1,8 @@
+var ws = new WebSocket("ws://localhost:8765");
 (function() {
     "use strict";
 
-    console.log('Initializing Visitor Tracker...');
-    console.log('Initializing event watchers...');
+
     initWatchers();
     console.log('Initializing Visitor Tracker done.');
 
@@ -14,9 +14,9 @@
         });
 
         // watch mouse move
-        watch(document, 'mousemove', function(event) {
-            return { type: 'MOUSE_MOVE', x: event.clientX, y: event.clientY };
-        });
+       // watch(document, 'mousemove', function(event) {
+       //     return { type: 'MOUSE_MOVE', x: event.clientX, y: event.clientY };
+       // });
     }
 
     function watch(target, eventName, transformEventCb, callCbOnInit) {
@@ -31,6 +31,7 @@
 
     function handleEvent(event) {
         event.ts = new Date().getTime();
+		ws.send(JSON.stringify(event));
         console.log(event);
     }
 })();
