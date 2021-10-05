@@ -3,6 +3,7 @@ import asyncio
 import websockets
 import json
 import db
+import logging
 
 
 def store(pos):
