@@ -1,6 +1,5 @@
 # takes json input from frontend and send it to db
 from flask import Flask 
-from flask import request
 from flask_cors import CORS
 import db
 app = Flask(__name__) #creating the Flask class object
@@ -36,7 +35,7 @@ def mapping(page_id):
 		hmap_conf.append(xy)
 
 
-	return { "data": hmap_conf}
+	return { "data" : hmap_conf}
 	
 
 if __name__ =='__main__':  
