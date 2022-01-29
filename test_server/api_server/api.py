@@ -30,9 +30,11 @@ def mapping(page_id):
 
 		xy = {"x": X, "y": Y, "value": 1}
 		if xy in hmap_conf:
-			xy.value = xy.value + 1
-
-		hmap_conf.append(xy)
+			val = xy["value"] + 1
+			xy = {"x": X, "y": Y, "value": val}
+			hmap_conf.append(xy)
+		else:
+			hmap_conf.append(xy)
 
 
 	return { "data" : hmap_conf}
