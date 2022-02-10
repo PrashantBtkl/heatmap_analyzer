@@ -6,11 +6,7 @@ app = Flask(__name__) #creating the Flask class object
 
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}}) 
- 
-@app.route('/') #decorator drfines the   
-def home():  
-    return "hello, this is our first flask website";  
-  
+   
 @app.route('/get_xy/<page_id>',methods = ['GET'])
 def mapping(page_id):
 	conn = db.get_conn()
@@ -24,18 +20,28 @@ def mapping(page_id):
 
 	# response should be like this -> [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}, ...]
 	hmap_conf = []
+	hmap_set = set()
+
+	#Build heatmap config
 	for coord in res:
 		X = coord[0]
 		Y = coord[1]
 
-		xy = {"x": X, "y": Y, "value": 1}
-		if xy in hmap_conf:
-			val = xy["value"] + 1
-			xy = {"x": X, "y": Y, "value": val}
-			hmap_conf.append(xy)
+		xy = (X, Y)
+		if xy in hmap_set:
+			for conf in hmap_conf:
+				if conf["id"] == xy:
+					val = conf["value"] + 1
+					xy = {"id":xy, "x": X, "y": Y, "value": val}
+					conf.update(xy)
 		else:
+			hmap_set.add(xy)
+			xy = {"id":xy, "x": X, "y": Y, "value": 1}
 			hmap_conf.append(xy)
 
+	#delete redundant json key
+	for conf in hmap_conf:
+		conf.pop("id")
 
 	return { "data" : hmap_conf}
 	
